@@ -1,5 +1,8 @@
 import pygame, sys
 from pygame.math import Vector2
+from os import walk, path
+from os.path import join
+
 # screen
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
