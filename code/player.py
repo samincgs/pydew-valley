@@ -89,13 +89,14 @@ class Player(pygame.sprite.Sprite):
                 self.tool_index += 1
                 if self.tool_index >= len(self.tools): self.tool_index = 0
                 self.selected_tool = self.tools[self.tool_index]
-                print('change tool')
+                print(self.tool_index)
                 
             #seed use
             if keys[pygame.K_LCTRL]:
                 self.timers['seed use'].activate()
                 self.direction = Vector2()
                 self.frame_index = 0
+                print('seed use')
             
             #change seed
             if keys[pygame.K_e] and not self.timers['seed switch'].active:
