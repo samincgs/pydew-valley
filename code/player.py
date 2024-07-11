@@ -12,6 +12,7 @@ class Player(pygame.sprite.Sprite):
         
         self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_frect(center = pos)
+        self.z = LAYERS['main']
         
         #movement
         self.pos = Vector2(self.rect.center)
@@ -100,7 +101,7 @@ class Player(pygame.sprite.Sprite):
             
             #change seed
             if keys[pygame.K_e] and not self.timers['seed switch'].active:
-                self.timers['seed switch'].activate  
+                self.timers['seed switch'].activate()
                 self.seed_index += 1
                 if self.seed_index >= len(self.seeds): self.seed_index = 0
                 self.selected_seed = self.seeds[self.seed_index]  

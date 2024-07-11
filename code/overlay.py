@@ -18,3 +18,6 @@ class Overlay:
         self.display_surface.blit(tool_surf, tool_rect)
         
         #seed
+        seed_surf = self.seeds_surf[self.player.selected_seed]
+        seed_rect = seed_surf.get_frect(midbottom = OVERLAY_POSITIONS['seed'])
+        self.display_surface.blit(seed_surf, seed_rect)
