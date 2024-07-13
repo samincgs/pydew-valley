@@ -1,4 +1,5 @@
 from settings import *
+from random import randint
 
 class Generic(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups, z = LAYERS['main']):
@@ -33,3 +34,17 @@ class WildFlower(Generic):
 class Tree(Generic):
     def __init__(self, pos, surf, groups, name):
         super().__init__(pos, surf, groups)
+        
+        self.apple_surf = pygame.image.load(join('graphics', 'fruit', 'apple.png')).convert_alpha()
+        self.apple_pos = APPLE_POS[name]
+        self.apple_sprites = pygame.sprite.Group()
+        self.create_fruit()
+        
+    def create_fruit(self):
+        for pos in self.apple_pos:
+            if randint(0, 10) < 2:
+                x = self.rect.left + pos[0]
+                y = self.rect.top + pos[1]
+                Generic((x, y), self.apple_surf, (self.apple_sprites, self.groups()[0]), LAYERS['fruit'])
+
+        
