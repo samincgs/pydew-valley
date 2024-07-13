@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.math import Vector2
 from os import walk, path
 from os.path import join
+from pytmx.util_pygame import load_pygame
 
 # screen
 SCREEN_WIDTH = 1280

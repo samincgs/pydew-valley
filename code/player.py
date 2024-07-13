@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         #movement
         self.pos = Vector2(self.rect.center)
         self.direction = Vector2()
-        self.speed = 200
+        self.speed = 500
         
         #timers
         self.timers = {
@@ -90,7 +90,6 @@ class Player(pygame.sprite.Sprite):
                 self.tool_index += 1
                 if self.tool_index >= len(self.tools): self.tool_index = 0
                 self.selected_tool = self.tools[self.tool_index]
-                print(self.tool_index)
                 
             #seed use
             if keys[pygame.K_LCTRL]:
