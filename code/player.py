@@ -150,7 +150,7 @@ class Player(pygame.sprite.Sprite):
         current_animation = self.animations[self.status]
         self.frame_index += 4 * dt
         
-        if self.frame_index > len(current_animation):
+        if self.frame_index >= len(current_animation):
             self.frame_index = 0
         self.image = current_animation[int(self.frame_index)]
     
@@ -163,20 +163,22 @@ class Player(pygame.sprite.Sprite):
             if hasattr(sprite, 'hitbox'):
                 if sprite.hitbox.colliderect(self.hitbox):
                     if direction == 'horizontal':
-                        if self.direction.x > 0:
+                        if self.direction.x > 0: # moving right
                             self.hitbox.right = sprite.hitbox.left
-                        if self.direction.x < 0:
+                        if self.direction.x < 0: # moving left
                             self.hitbox.left = sprite.hitbox.right
                         self.rect.centerx = self.hitbox.centerx
                         self.pos.x = self.hitbox.centerx
-                        
+
                     if direction == 'vertical':
-                        if self.direction.y > 0:
+                        if self.direction.y > 0: # moving down
                             self.hitbox.bottom = sprite.hitbox.top
-                        if self.direction.y < 0:
+                        if self.direction.y < 0: # moving up
                             self.hitbox.top = sprite.hitbox.bottom
                         self.rect.centery = self.hitbox.centery
                         self.pos.y = self.hitbox.centery
+        
+        
         
     def update(self, dt):
         self.input()
