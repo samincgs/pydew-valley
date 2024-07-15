@@ -1,9 +1,4 @@
-import pygame, sys
-from pygame.math import Vector2
-from os import walk, path
-from os.path import join
-from pytmx.util_pygame import load_pygame
-
+from pygame import Vector2
 # screen
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
