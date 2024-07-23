@@ -11,9 +11,11 @@ class Player(pygame.sprite.Sprite):
         self.import_assets()
         self.status = 'down_idle'
         self.frame_index = 0
+        
         #general setup
         self.image = self.animations[self.status][self.frame_index]
-        self.rect = self.image.get_rect(center = pos) 
+        self.rect = self.image.get_rect(center = pos)
+        self.z = LAYERS['main']
         
         # movement
         self.direction = pygame.Vector2()
