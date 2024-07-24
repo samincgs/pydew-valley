@@ -26,3 +26,11 @@ class Water(Generic):
         
     def update(self, dt):
         self.animate(dt)
+        
+class WildFlower(Generic):
+    def __init__(self, pos, surf, groups):
+        super().__init__(pos, surf, groups)
+        
+class Tree(Generic):
+    def __init__(self, pos, surf, groups, name):
+        super().__init__(pos, surf, groups)

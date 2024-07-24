@@ -4,7 +4,7 @@ from pytmx.util_pygame import load_pygame
 from settings import *
 from player import Player
 from overlay import Overlay
-from sprites import Generic, Water
+from sprites import Generic, Water, WildFlower, Tree
 from support import import_folder
  
 
@@ -44,10 +44,12 @@ class Level:
             Water((x * TILE_SIZE, y * TILE_SIZE), water_frames, self.all_sprites)
         
         # trees
-        
+        for obj in tmx_map.get_layer_by_name('Trees'):
+            Tree((obj.x, obj.y), obj.image, self.all_sprites, obj.name)   
         
         # wildflowers
-                
+        for obj in tmx_map.get_layer_by_name('Decoration'):
+            WildFlower((obj.x, obj.y), obj.image, self.all_sprites)      
         
         
         
