@@ -5,7 +5,7 @@ from support import import_folder
 from timer import Timer
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups):
+    def __init__(self, pos, groups, collision_sprites):
         super().__init__(groups)
         
         self.import_assets()
@@ -15,12 +15,15 @@ class Player(pygame.sprite.Sprite):
         #general setup
         self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_rect(center = pos)
+        self.hitbox = self.rect.copy().inflate((-126, -70))
         self.z = LAYERS['main']
         
         # movement
         self.direction = pygame.Vector2()
         self.pos = pygame.Vector2(self.rect.center)
         self.speed = 400
+        
+        self.collision_sprites = collision_sprites
         
         #timers
         self.timers = {
@@ -108,8 +111,7 @@ class Player(pygame.sprite.Sprite):
                 if self.seed_index >= len(self.seeds):
                     self.seed_index = 0
                 self.selected_seed = self.seeds[self.seed_index]
-                
-        
+                       
     def get_status(self):
         
         # idle movement
@@ -130,12 +132,37 @@ class Player(pygame.sprite.Sprite):
         
         #horizontal movement
         self.pos.x += self.direction.x * self.speed * dt
-        self.rect.centerx = self.pos.x
+        self.hitbox.centerx = round(self.pos.x)
+        self.rect.centerx = self.hitbox.centerx
+        self.collision('horizontal')
         
         #vertical movement  
         self.pos.y += self.direction.y * self.speed * dt
-        self.rect.centery = self.pos.y
-        
+        self.hitbox.centery = round(self.pos.y)
+        self.rect.centery = self.hitbox.centery
+        self.collision('vertical')
+    
+    def collision(self, direction):
+        for sprite in self.collision_sprites:
+            if hasattr(sprite, 'hitbox'):
+                if sprite.hitbox.colliderect(self.hitbox):
+                    if direction == 'horizontal':
+                        if self.direction.x > 0:
+                            self.hitbox.right = sprite.hitbox.left
+                        if self.direction.x < 0:
+                            self.hitbox.left = sprite.hitbox.right
+                        self.pos.x = self.hitbox.centerx
+                        self.rect.centerx = self.hitbox.centerx   
+                    if direction == 'vertical':
+                        if self.direction.y > 0:
+                            self.hitbox.bottom = sprite.hitbox.top
+                        if self.direction.y < 0:
+                            self.hitbox.top = sprite.hitbox.bottom
+                        self.pos.y = self.hitbox.centery
+                        self.rect.centery = self.hitbox.centery           
+                    
+                        
+      
     def animate(self, dt):
         self.frame_index += 4 * dt
         if self.frame_index >= len(self.animations[self.status]):
