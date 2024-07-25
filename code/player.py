@@ -5,7 +5,7 @@ from support import import_folder
 from timer import Timer
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, collision_sprites):
+    def __init__(self, pos, groups, collision_sprites, tree_sprites):
         super().__init__(groups)
         
         self.import_assets()
@@ -24,6 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 400
         
         self.collision_sprites = collision_sprites
+        self.tree_sprites = tree_sprites
         
         #timers
         self.timers = {
@@ -43,12 +44,23 @@ class Player(pygame.sprite.Sprite):
         self.seed_index = 0
         self.selected_seed = self.seeds[self.seed_index]
     
+    def get_target_pos(self):
+        self.target_pos = self.rect.center + PLAYER_TOOL_OFFSET[self.status.split('_')[0]]
+     
     def use_seed(self):
         pass
     
     def use_tool(self):
-        pass
-    
+        print('tool use')
+        if self.selected_tool == 'hoe':
+            pass
+        if self.selected_tool == 'axe':
+            for tree in self.tree_sprites:
+                if tree.rect.collidepoint(self.target_pos):
+                    tree.damage()
+        if self.selected_tool == 'water':
+            pass
+            
     def import_assets(self):
         self.animations = {'up' : [],'down' : [], 'left' : [],'right' : [],
                            'up_idle' : [],'down_idle' : [],'left_idle' : [], 'right_idle' : [],
@@ -173,6 +185,7 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.get_status()
         self.update_timers()
+        self.get_target_pos()
         
         self.move(dt)
         self.animate(dt)
