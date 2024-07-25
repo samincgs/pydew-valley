@@ -38,7 +38,6 @@ class Level:
         for x,y, surf in tmx_map.get_layer_by_name('Fence').tiles():
             Generic((x * TILE_SIZE, y * TILE_SIZE), surf, (self.all_sprites, self.collision_sprites))
             
-            
         # water
         water_frames = import_folder(join("graphics", "water"))
         for x,y,surf in tmx_map.get_layer_by_name('Water').tiles():
@@ -52,11 +51,15 @@ class Level:
         for obj in tmx_map.get_layer_by_name('Decoration'):
             WildFlower((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))      
         
-        
+        # player
         for obj in tmx_map.get_layer_by_name('Player'):
             if obj.name == 'Start':
                 self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
-            
+        
+        # collision walls
+        for x,y, surf in tmx_map.get_layer_by_name('Collision').tiles():
+            Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((surf.get_width(), surf.get_height())), self.collision_sprites)
+           
         Generic((0, 0), pygame.image.load(join('graphics', 'world', 'ground.png')), self.all_sprites, LAYERS['ground'])
         
         
