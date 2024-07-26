@@ -76,24 +76,26 @@ class SoilLayer:
                     if all((t,b,r,l)): tile_type = 'x'
                     
                     # horizontal tiles only
-                    if l and not any((t,r,b)): tile_type = 'r'
-                    
+                    if l and not any((t,r,b)): tile_type = 'r' 
                     if r and not any((t,l,b)): tile_type = 'l'
-                    
                     if r and l and not any((t,b)): tile_type = 'lr'
                     
                     # vertical tiles only
                     if t and not any((l,r,b)): tile_type = 'b'
-                    
                     if b and not any((l,r,t)): tile_type = 't'
-                    
                     if t and b and not any((l,r)): tile_type = 'tb'
                     
                     # corners
                     if l and b and not any((t, r)): tile_type = 'tr' #topright
                     if b and r and not any((t, l)): tile_type = 'tl' #topleft
-                    if t and l and not any((b, r)): tile_type = 'br' #bottom right
+                    if l and t and not any((b, r)): tile_type = 'br' #bottom right
                     if t and r and not any((l, b)): tile_type = 'bl' #bottom left
+                    
+                    # T shapes
+                    if all((t,b,r)) and not l: tile_type = 'tbr' #in the middle of top, bottom and right
+                    if all((t,b,l)) and not r: tile_type = 'tbl' #in the middle of top, bottom and left
+                    if all((l, r, t)) and not b: tile_type = 'lrb' #in the middle of left, right and top
+                    if all((l, r, b)) and not t: tile_type = 'lrt' #in the middle of left, right and top
                         
                     
                     SoilTile((index_col * TILE_SIZE, index_row * TILE_SIZE), self.soil_surfs[tile_type], (self.all_sprites, self.soil_sprites))
