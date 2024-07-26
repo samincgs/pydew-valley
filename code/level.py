@@ -22,6 +22,9 @@ class Level:
         self.setup()
         self.overlay = Overlay(self.player)
     
+    def player_add(self, item):
+        self.player.item_inventory[item] += 1
+    
     def setup(self):
         tmx_map = load_pygame(join('data', 'map.tmx'))
         
@@ -46,7 +49,11 @@ class Level:
         
         # trees
         for obj in tmx_map.get_layer_by_name('Trees'):
-            Tree((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites, self.tree_sprites), obj.name)   
+            Tree(pos =(obj.x, obj.y), 
+                 surf=obj.image, 
+                 groups=(self.all_sprites, self.collision_sprites, self.tree_sprites), 
+                 name=obj.name,
+                 player_add = self.player_add)   
         
         # wildflowers
         for obj in tmx_map.get_layer_by_name('Decoration'):
@@ -62,8 +69,6 @@ class Level:
             Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((surf.get_width(), surf.get_height())), self.collision_sprites)
            
         Generic((0, 0), pygame.image.load(join('graphics', 'world', 'ground.png')), self.all_sprites, LAYERS['ground'])
-        
-        
         
     def run(self, dt):
         self.display_surface.fill('black')
