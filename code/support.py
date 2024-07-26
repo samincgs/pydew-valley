@@ -12,3 +12,18 @@ def import_folder(path):
             surface_list.append(image_surf)
     
     return surface_list
+
+def import_folder_dict(path):
+    surface_dict = {}
+    
+    for _, _, files in walk(path):
+        for image in files:  
+            key = image.split('.')[0]
+            full_path = join(path, image)
+            surf = pygame.image.load(full_path).convert_alpha()
+            surface_dict[key] = surf
+            
+    return surface_dict
+        
+    
+    
