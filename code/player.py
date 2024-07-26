@@ -5,7 +5,7 @@ from support import import_folder
 from timer import Timer
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, collision_sprites, tree_sprites):
+    def __init__(self, pos, groups, collision_sprites, tree_sprites, interaction):
         super().__init__(groups)
         
         self.import_assets()
@@ -24,7 +24,6 @@ class Player(pygame.sprite.Sprite):
         self.speed = 400
         
         self.collision_sprites = collision_sprites
-        self.tree_sprites = tree_sprites
         
         #timers
         self.timers = {
@@ -43,6 +42,11 @@ class Player(pygame.sprite.Sprite):
         self.seeds = ['corn', 'tomato']
         self.seed_index = 0
         self.selected_seed = self.seeds[self.seed_index]
+        
+        #interaction
+        self.tree_sprites = tree_sprites
+        self.interaction = interaction
+        self.sleep = False
         
         # inventory
         self.item_inventory = {
@@ -83,7 +87,7 @@ class Player(pygame.sprite.Sprite):
     def input(self):
         keys = pygame.key.get_pressed()
         
-        if not self.timers['tool use'].active:
+        if not self.timers['tool use'].active and not self.sleep:
             #directions
             if keys[pygame.K_UP]:
                 self.direction.y = -1
@@ -131,6 +135,16 @@ class Player(pygame.sprite.Sprite):
                 if self.seed_index >= len(self.seeds):
                     self.seed_index = 0
                 self.selected_seed = self.seeds[self.seed_index]
+                
+            # interact with bed
+            if keys[pygame.K_RETURN]:
+                collided_interaction_sprite = pygame.sprite.spritecollide(self, self.interaction, False)
+                if collided_interaction_sprite:
+                    if collided_interaction_sprite[0].name == 'Trader':
+                        pass
+                    if collided_interaction_sprite[0].name == 'Bed':
+                        self.status = 'left_idle'
+                        self.sleep = True
                        
     def get_status(self):
         
@@ -180,9 +194,7 @@ class Player(pygame.sprite.Sprite):
                             self.hitbox.top = sprite.hitbox.bottom
                         self.pos.y = self.hitbox.centery
                         self.rect.centery = self.hitbox.centery           
-                    
-                        
-      
+
     def animate(self, dt):
         self.frame_index += 4 * dt
         if self.frame_index >= len(self.animations[self.status]):

@@ -23,7 +23,7 @@ class Water(Generic):
         super().__init__(pos, self.frames[self.frame_index], groups, LAYERS['water'])
     
     def animate(self, dt):
-        self.frame_index += 4 * dt
+        self.frame_index += 9 * dt
         if self.frame_index >= len(self.frames):
             self.frame_index = 0    
         self.image = self.frames[int(self.frame_index)]
@@ -53,6 +53,12 @@ class Particle(Generic):
         current_time = pygame.time.get_ticks()
         if current_time - self.start_time > self.duration:
             self.kill()
+
+class Interaction(Generic):
+    def __init__(self, pos, size, groups, name):
+        surf = pygame.Surface(size)
+        super().__init__(pos, surf, groups)
+        self.name = name
        
 class Tree(Generic):
     def __init__(self, pos, surf, groups, name, player_add):
