@@ -2,7 +2,8 @@ import pygame
 from settings import *
 from os.path import join
 from pytmx.util_pygame import load_pygame
-from support import import_folder_dict
+from support import import_folder_dict, import_folder
+from random import choice
 
 class SoilTile(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups):
@@ -11,17 +12,24 @@ class SoilTile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.z = LAYERS['soil']
 
+class WaterTile(pygame.sprite.Sprite):
+    def __init__(self, pos, surf , groups):
+        super().__init__(groups)
+        self.image = surf
+        self.rect = self.image.get_rect(topleft = pos)
+        self.z = LAYERS['soil water']
+
 class SoilLayer:
     def __init__(self, all_sprites):
         
         # sprite groups
         self.all_sprites = all_sprites
         self.soil_sprites = pygame.sprite.Group()
+        self.water_sprites = pygame.sprite.Group()
         
         # graphics
-        self.soil_surf = pygame.image.load(join('graphics', 'soil', 'o.png')).convert_alpha()
         self.soil_surfs = import_folder_dict(join('graphics', 'soil'))
-        print(self.soil_surfs)
+        self.water_surfs = import_folder(join('graphics', 'soil_water'))
         
         self.create_soil_grid()
         self.create_hit_rects()
@@ -97,5 +105,20 @@ class SoilLayer:
                     if all((l, r, t)) and not b: tile_type = 'lrb' #in the middle of left, right and top
                     if all((l, r, b)) and not t: tile_type = 'lrt' #in the middle of left, right and top
                         
-                    
                     SoilTile((index_col * TILE_SIZE, index_row * TILE_SIZE), self.soil_surfs[tile_type], (self.all_sprites, self.soil_sprites))
+    
+    def water(self, target_pos):
+        for soil_sprite in self.soil_sprites:
+            if soil_sprite.rect.collidepoint(target_pos):
+                
+                # add an entry to the soil grid -> 'W'
+                x = soil_sprite.rect.x // TILE_SIZE
+                y = soil_sprite.rect.y // TILE_SIZE
+                self.grid[y][x].append('W')
+                
+                # create a water sprite
+                pos = soil_sprite.rect.topleft
+                surf = choice(self.water_surfs)
+                WaterTile(pos=pos,
+                          surf=surf,
+                          groups=(self.all_sprites, self.water_sprites))

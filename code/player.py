@@ -72,7 +72,7 @@ class Player(pygame.sprite.Sprite):
                 if tree.rect.collidepoint(self.target_pos):
                     tree.damage()
         if self.selected_tool == 'water':
-            pass
+            self.soil_layer.water(self.target_pos)
             
     def import_assets(self):
         self.animations = {'up' : [],'down' : [], 'left' : [],'right' : [],
