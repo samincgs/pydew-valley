@@ -107,6 +107,18 @@ class SoilLayer:
                         
                     SoilTile((index_col * TILE_SIZE, index_row * TILE_SIZE), self.soil_surfs[tile_type], (self.all_sprites, self.soil_sprites))
     
+    def remove_water(self):
+        
+        # destroy all water sprites
+        for sprite in self.water_sprites:
+            sprite.kill()
+        
+        # clean up the grid
+        for row in self.grid:
+            for cell in row:
+                if 'W' in cell:
+                    cell.remove('W')
+    
     def water(self, target_pos):
         for soil_sprite in self.soil_sprites:
             if soil_sprite.rect.collidepoint(target_pos):

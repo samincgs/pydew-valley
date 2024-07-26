@@ -103,6 +103,7 @@ class Level:
         
         if self.player.sleep:
             self.transition.play()
+            self.soil_layer.remove_water()
             
             
         
