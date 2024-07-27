@@ -29,7 +29,7 @@ class Player(pygame.sprite.Sprite):
         self.timers = {
            'tool use' : Timer(350, self.use_tool),
            'tool switch': Timer(200),
-           'seed use': Timer(350, self.use_seed),
+           'seed use': Timer(300, self.use_seed),
            'seed switch': Timer(200),
         }
         
@@ -61,10 +61,11 @@ class Player(pygame.sprite.Sprite):
         self.target_pos = self.rect.center + PLAYER_TOOL_OFFSET[self.status.split('_')[0]]
      
     def use_seed(self):
-        pass
+        print('use seed')
+        self.soil_layer.plant_seed(self.target_pos, self.selected_seed)
     
     def use_tool(self):
-        print('tool use')
+        print('use tool')
         if self.selected_tool == 'hoe':
             self.soil_layer.get_hit(self.target_pos)
         if self.selected_tool == 'axe':
@@ -117,6 +118,7 @@ class Player(pygame.sprite.Sprite):
                 
             # change tool
             if keys[pygame.K_q] and not self.timers['tool switch'].active:
+                print('tool switch')
                 self.timers['tool switch'].activate()
                 self.tool_index += 1
                 if self.tool_index >= len(self.tools):
@@ -124,13 +126,14 @@ class Player(pygame.sprite.Sprite):
                 self.selected_tool = self.tools[self.tool_index]
                 
             # seed use
-            if keys[pygame.K_LCTRL]:
+            if keys[pygame.K_LSHIFT]:
                 self.timers['seed use'].activate()
                 self.direction = pygame.Vector2()
                 self.frame_index = 0
                 
             # seed switch
             if keys[pygame.K_e] and not self.timers['seed switch'].active:
+                print('seed switch')
                 self.timers['seed switch'].activate()
                 self.seed_index += 1 
                 if self.seed_index >= len(self.seeds):
