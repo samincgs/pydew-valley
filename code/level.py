@@ -126,9 +126,7 @@ class Level:
         if self.player.sleep:
             self.transition.play()
             
-            
-            
-        
+
 class CameraGroup(pygame.sprite.Group):
     def __init__(self):
         super().__init__()
