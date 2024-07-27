@@ -8,6 +8,7 @@ from sprites import Generic, Water, WildFlower, Tree, Interaction
 from support import import_folder
 from transition import Transition
 from soil import SoilLayer
+from sky import Rain
  
 
 class Level:
@@ -26,6 +27,10 @@ class Level:
         self.setup()
         self.overlay = Overlay(self.player)
         self.transition = Transition(self.reset, self.player)
+        
+        #sky
+        self.rain = Rain(self.all_sprites)
+        self.raining = True
     
     def player_add(self, item):
         self.player.item_inventory[item] += 1
@@ -101,6 +106,11 @@ class Level:
         
         self.overlay.display()
         
+        # rain
+        if self.raining:
+            self.rain.update()
+        
+        # transition overlay
         if self.player.sleep:
             self.transition.play()
             self.soil_layer.remove_water()
