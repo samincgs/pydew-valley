@@ -9,7 +9,7 @@ from sprites import Generic, Water, WildFlower, Tree, Interaction, Particle
 from support import import_folder
 from transition import Transition
 from soil import SoilLayer
-from sky import Rain
+from sky import Rain, Sky
  
 
 class Level:
@@ -31,6 +31,7 @@ class Level:
         
         #sky
         self.rain = Rain(self.all_sprites)
+        self.sky = Sky()
         self.raining = randint(0, 10) > 7
         self.soil_layer.raining = self.raining
     
@@ -106,6 +107,9 @@ class Level:
         if self.raining:
             self.soil_layer.water_all()
         
+        # sky
+        self.sky.start_color = [255, 255, 255]
+        
         #apples on the trees
         for tree in self.tree_sprites:
             for apple in tree.apple_sprites:
@@ -136,6 +140,9 @@ class Level:
         # rain
         if self.raining:
             self.rain.update()
+            
+        # daytime
+        self.sky.display(dt)
         
         # transition overlay
         if self.player.sleep:
