@@ -1,6 +1,7 @@
 import pygame
 from os.path import join
 from pytmx.util_pygame import load_pygame
+from random import randint
 from settings import *
 from player import Player
 from overlay import Overlay
@@ -30,7 +31,8 @@ class Level:
         
         #sky
         self.rain = Rain(self.all_sprites)
-        self.raining = True
+        self.raining = randint(0, 10) > 3
+        self.soil_layer.raining = self.raining
     
     def player_add(self, item):
         self.player.item_inventory[item] += 1
@@ -91,6 +93,16 @@ class Level:
         Generic((0, 0), pygame.image.load(join('graphics', 'world', 'ground.png')), self.all_sprites, LAYERS['ground'])
     
     def reset(self):
+        
+        # soil
+        self.soil_layer.remove_water()
+        
+        # randomize rain
+        self.raining = randint(0, 10) > 3
+        self.soil_layer.raining = self.raining
+        if self.raining:
+            self.soil_layer.water_all()
+        
         #apples on the trees
         for tree in self.tree_sprites:
             for apple in tree.apple_sprites:
@@ -113,7 +125,7 @@ class Level:
         # transition overlay
         if self.player.sleep:
             self.transition.play()
-            self.soil_layer.remove_water()
+            
             
             
         
