@@ -73,7 +73,10 @@ class SoilLayer:
         
         # sounds
         self.hoe_sound = import_music('audio', 'hoe.wav')
-        self.hoe_sound.set_volume(0.1)
+        self.hoe_sound.set_volume(0.3)
+        
+        self.plant_sound = import_music('audio', 'plant.wav')
+        self.plant_sound.set_volume(0.2)
         
     def create_soil_grid(self):
         ground = pygame.image.load(join('graphics', 'world', 'ground.png'))
@@ -117,6 +120,7 @@ class SoilLayer:
                 if 'P' not in self.grid[y][x]:
                     self.grid[y][x].append('P')
                     Plant(seed, (self.all_sprites, self.plant_sprites, self.collision_sprites), soil_sprite, self.check_watered)
+                    self.plant_sound.play()
                     
     def create_soil_tiles(self):
         self.soil_sprites.empty()

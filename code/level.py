@@ -40,8 +40,12 @@ class Level:
         self.shop_active = False
         
         #music
+        self.bg_music = import_music('audio', 'bg.mp3')
+        self.bg_music.set_volume(0.3)
+        self.bg_music.play(loops= - 1)
+        
         self.success_sound = import_music('audio', 'success.wav')
-        self.success_sound.set_volume(0.2)
+        self.success_sound.set_volume(0.4)
     
     def player_add(self, item):
         self.player.item_inventory[item] += 1
@@ -121,7 +125,7 @@ class Level:
         self.soil_layer.remove_water()
         
         # randomize rain
-        self.raining = randint(0, 10) < 3
+        self.raining = randint(0, 10) > 7
         self.soil_layer.raining = self.raining
         if self.raining:
             self.soil_layer.water_all()

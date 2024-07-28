@@ -69,7 +69,6 @@ class Tree(Generic):
         self.health = 5
         self.alive = True
         self.stump_surf = pygame.image.load(join('graphics', 'stumps', f'{join('large.png') if name == 'Large' else join('small.png')}'))
-        self.invul_timer = Timer(200)
         
         #apples
         self.apple_surf = pygame.image.load(join('graphics', 'fruit', 'apple.png'))
@@ -82,7 +81,6 @@ class Tree(Generic):
         
         # sounds
         self.axe_sound = import_music('audio', 'axe.mp3')
-        self.axe_sound.set_volume(0.4)
         
     
     def create_fruit(self):
