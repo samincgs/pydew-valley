@@ -26,7 +26,6 @@ class Rain:
         self.rain_drops = import_folder(join('graphics', 'rain', 'drops'))
         self.rain_floor = import_folder(join('graphics', 'rain', 'floor'))
         self.floor_w, self.floor_h = pygame.image.load(join('graphics', 'world', 'ground.png')).get_size()
-        print(self.floor_w, self.floor_h)
         
     def create_floor(self):
         x = randint(0, self.floor_w) 
@@ -45,8 +44,7 @@ class Rain:
         self.create_drops()
 
 class Drop(Generic):
-    def __init__(self, pos, surf, moving, groups , z):
-        
+    def __init__(self, pos, surf, moving, groups,z):
         # general setup
         super().__init__(pos, surf, groups, z)
         self.lifetime = randint(300, 500)
