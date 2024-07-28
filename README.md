@@ -4,7 +4,7 @@
 
 This project is a simplified recreation of one of my favorite games, Stardew Valley, developed using Python and the Pygame library. It utilizes Object oriented principles and inheritance to create organized and easy to understand code.
 
-![pydew valley](https://github.com/user-attachments/assets/c1162db8-57e7-42f9-9e99-3cd5c5b2a23f)
+![pydew valley](https://github.com/user-attachments/assets/e3b33625-66ff-45b1-8862-dfc4e282c94d)
 
 #### Features
 
