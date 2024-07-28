@@ -52,10 +52,10 @@ class Player(pygame.sprite.Sprite):
         
         # inventory
         self.item_inventory = {
-            'wood':   0,
-            'apple':  0,
-            'corn':   0,
-            'tomato': 0
+            'wood':   20,
+            'apple':  20,
+            'corn':   20,
+            'tomato': 20
         }
         
         self.seed_inventory = {
@@ -97,6 +97,7 @@ class Player(pygame.sprite.Sprite):
           
     def input(self):
         keys = pygame.key.get_pressed()
+        recent_keys = pygame.key.get_just_pressed()
         
         if not self.timers['tool use'].active and not self.sleep:
             #directions
@@ -119,7 +120,7 @@ class Player(pygame.sprite.Sprite):
                 self.direction.x = 0
                 
             #tool use
-            if keys[pygame.K_SPACE]:
+            if recent_keys[pygame.K_SPACE]:
                 # timer for the tool use
                 self.timers['tool use'].activate()
                 self.direction = pygame.Vector2()
@@ -135,7 +136,7 @@ class Player(pygame.sprite.Sprite):
                 self.selected_tool = self.tools[self.tool_index]
                 
             # seed use
-            if keys[pygame.K_LSHIFT]:
+            if recent_keys[pygame.K_LSHIFT]:
                 self.timers['seed use'].activate()
                 self.direction = pygame.Vector2()
                 self.frame_index = 0
