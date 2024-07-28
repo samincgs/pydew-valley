@@ -26,4 +26,6 @@ def import_folder_dict(path):
     return surface_dict
         
     
-    
+def import_music(*path):
+    sound = pygame.mixer.Sound(join(*path))
+    return sound

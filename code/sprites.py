@@ -3,6 +3,7 @@ from settings import *
 from os.path import join
 from random import randint, choice
 from timer import Timer
+from support import import_music
 
 class Generic(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups, z = LAYERS['main']):
@@ -79,6 +80,10 @@ class Tree(Generic):
         # inventory
         self.player_add = player_add
         
+        # sounds
+        self.axe_sound = import_music('audio', 'axe.mp3')
+        self.axe_sound.set_volume(0.4)
+        
     
     def create_fruit(self):
         for pos in self.apple_pos:
@@ -91,6 +96,9 @@ class Tree(Generic):
         print('tree has been hit')
         #damaging the tree
         self.health -= 1
+        
+        # play sound
+        self.axe_sound.play()
         
         # remove an apple
         if len(self.apple_sprites.sprites()) > 0:

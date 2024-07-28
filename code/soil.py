@@ -2,7 +2,7 @@ import pygame
 from settings import *
 from os.path import join
 from pytmx.util_pygame import load_pygame
-from support import import_folder_dict, import_folder
+from support import import_folder_dict, import_folder, import_music
 from random import choice
 
 class Plant(pygame.sprite.Sprite):
@@ -71,6 +71,10 @@ class SoilLayer:
         self.create_soil_grid()
         self.create_hit_rects()
         
+        # sounds
+        self.hoe_sound = import_music('audio', 'hoe.wav')
+        self.hoe_sound.set_volume(0.1)
+        
     def create_soil_grid(self):
         ground = pygame.image.load(join('graphics', 'world', 'ground.png'))
         h_tiles = ground.get_width() // TILE_SIZE
@@ -94,6 +98,7 @@ class SoilLayer:
     def get_hit(self, point):
         for rect in self.hit_rects:
             if rect.collidepoint(point):
+                self.hoe_sound.play()
                 x = rect.x // TILE_SIZE
                 y = rect.y // TILE_SIZE
                 

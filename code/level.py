@@ -6,7 +6,7 @@ from settings import *
 from player import Player
 from overlay import Overlay
 from sprites import Generic, Water, WildFlower, Tree, Interaction, Particle
-from support import import_folder
+from support import import_folder, import_music
 from transition import Transition
 from soil import SoilLayer
 from sky import Rain, Sky
@@ -38,9 +38,14 @@ class Level:
         #shop
         self.menu = Menu(self.player, self.toggle_shop)
         self.shop_active = False
+        
+        #music
+        self.success_sound = import_music('audio', 'success.wav')
+        self.success_sound.set_volume(0.2)
     
     def player_add(self, item):
         self.player.item_inventory[item] += 1
+        self.success_sound.play()
     
     def setup(self):
         tmx_map = load_pygame(join('data', 'map.tmx'))
